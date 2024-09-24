@@ -1,1 +1,2 @@
-**WeatherApp** - iOS take home assignment
+# Weather-App
+iOS WeatherApp - take home iOS coding assignment
