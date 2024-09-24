@@ -10,16 +10,20 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var coordinator: WeatherCoordinator?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
-                window = UIWindow(windowScene: windowScene)
-                
-                // Set the root view controller as a UIKit ViewController
-                let rootViewController = WeatherViewController()
-                window?.rootViewController = UINavigationController(rootViewController: rootViewController)
-                window?.makeKeyAndVisible()
+        let window = UIWindow(windowScene: windowScene)
+        let navigationController = UINavigationController()
+        
+        coordinator = WeatherCoordinator(navigationController: navigationController)
+        coordinator?.start()
+        
+        window.rootViewController = navigationController
+        self.window = window
+        window.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
