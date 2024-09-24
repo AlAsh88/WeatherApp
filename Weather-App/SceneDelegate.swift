@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 window = UIWindow(windowScene: windowScene)
                 
                 // Set the root view controller as a UIKit ViewController
-                let rootViewController = ViewController()
+                let rootViewController = WeatherViewController()
                 window?.rootViewController = UINavigationController(rootViewController: rootViewController)
                 window?.makeKeyAndVisible()
     }
