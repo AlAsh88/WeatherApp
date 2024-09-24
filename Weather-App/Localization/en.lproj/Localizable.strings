@@ -1,0 +1,16 @@
+/* 
+  Localizable.strings
+  Weather-App
+
+  Created by Ayesha Shaikh on 9/24/24.
+  
+*/
+
+/* Button to fetch weather data */
+"Fetch Weather" = "Fetch Weather";
+
+/* Label for displaying temperature */
+"Temperature" = "Temperature";
+
+/* Label for displaying weather description */
+"Description" = "Description";

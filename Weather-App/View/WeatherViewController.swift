@@ -43,35 +43,53 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     private func setupViews() {
-        view.backgroundColor = .white
+        view.backgroundColor = .cyan
         
         // Configure text fields and labels
         cityTextField.placeholder = "City"
         cityTextField.accessibilityIdentifier = "cityTextField"
+        cityTextField.accessibilityLabel = "City input"
 
         stateTextField.placeholder = "State"
         stateTextField.accessibilityIdentifier = "stateTextField"
+        stateTextField.accessibilityLabel = "State input"
 
         countryTextField.placeholder = "Country"
         countryTextField.accessibilityIdentifier = "countryTextField"
+        countryTextField.accessibilityLabel = "Country input"
 
-        temperatureLabel.text = "Temperature:"
+        temperatureLabel.text = NSLocalizedString("Temperature", comment: "Label for displaying temperature")
         temperatureLabel.accessibilityIdentifier = "temperatureLabel"
 
-        descriptionLabel.text = "Description:"
+        descriptionLabel.text = NSLocalizedString("Description", comment: "Label for displaying weather description")
         descriptionLabel.accessibilityIdentifier = "descriptionLabel"
-        
+
         // Configure weather icon ImageView
         weatherIconImageView.contentMode = .scaleAspectFit
         weatherIconImageView.translatesAutoresizingMaskIntoConstraints = false
         weatherIconImageView.accessibilityIdentifier = "weatherIconImageView"
         
         // Configure button
-        fetchWeatherButton.setTitle("Fetch Weather", for: .normal)
+        fetchWeatherButton.setTitle(NSLocalizedString("Fetch Weather", comment: "Button to fetch weather data"), for: .normal)
         fetchWeatherButton.backgroundColor = .systemBlue
         fetchWeatherButton.setTitleColor(.white, for: .normal)
         fetchWeatherButton.addTarget(self, action: #selector(fetchWeather), for: .touchUpInside)
+        fetchWeatherButton.accessibilityIdentifier = "fetchWeatherButton"
+        fetchWeatherButton.accessibilityLabel = "Fetch weather"
+        fetchWeatherButton.accessibilityHint = "Double tap to fetch the weather for the entered location."
         
+        fetchWeatherButton.isAccessibilityElement = true
+        fetchWeatherButton.accessibilityTraits = .button
+
+        weatherIconImageView.isAccessibilityElement = true
+        weatherIconImageView.accessibilityTraits = .image
+        
+        temperatureLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+        temperatureLabel.adjustsFontForContentSizeCategory = true
+
+        descriptionLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        descriptionLabel.adjustsFontForContentSizeCategory = true
+
         // Create a vertical stack view to arrange all elements
         let stackView = UIStackView(arrangedSubviews: [
             cityTextField,
@@ -111,7 +129,10 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] weather in
                 guard let weather = weather else { return }
-                self?.temperatureLabel.text = "Temperature: \(weather.main.temp) °C"
+                let tempCelsius = weather.main.temp
+                let tempFahrenheit = (tempCelsius * 9/5) + 32
+//                temperatureLabel.text = NSLocalizedString("Temperature", comment: "Label for temperature")
+                self?.temperatureLabel.text = NSLocalizedString("Temperature: ", comment: "Label for temperature") + String(format: "%.1f °F", tempFahrenheit)
                 self?.descriptionLabel.text = "Description: \(weather.weather.first?.description ?? "")"
 
                 if let iconCode = weather.weather.first?.icon {
@@ -223,12 +244,14 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             }
         }
         
-        task.resume() // Start the API call
+        task.resume()
     }
     
     private func updateUI(with weatherResponse: WeatherResponse) {
+        let tempCelsius = weatherResponse.main.temp
+        let tempFahrenheit = (tempCelsius * 9/5) + 32
         // Update temperature label
-        temperatureLabel.text = "Temperature: \(weatherResponse.main.temp)°C"
+        temperatureLabel.text = String(format: "%.1f °F", tempFahrenheit)
         
         // Update description label
         if let weather = weatherResponse.weather.first {
@@ -265,34 +288,9 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
 
 }
 
-
-//class WeatherViewController: UIViewController {
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        // Do any additional setup after loading the view.
-//        
-//        view.backgroundColor = .white
-
-//        // Embed the SwiftUI View in UIKit using UIHostingController
-//        let weatherDetailView = WeatherDetailView()
-//        let hostingController = UIHostingController(rootView: weatherDetailView)
-//        
-//        addChild(hostingController)
-//        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(hostingController.view)
-//        
-//        // Set up Auto Layout constraints
-//        NSLayoutConstraint.activate([
-//            hostingController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-//            hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            hostingController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-//        ])
-//        
-//        hostingController.didMove(toParent: self)
-//    
-//    }
-//    
-//}
-
+extension WeatherViewController {
+    func accessibilityCustomActions() -> [UIAccessibilityCustomAction]? {
+        let fetchAction = UIAccessibilityCustomAction(name: "Fetch Weather", target: self, selector: #selector(fetchWeather))
+        return [fetchAction]
+    }
+}
