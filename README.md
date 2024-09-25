@@ -101,8 +101,6 @@ The app supports multiple languages using `Localizable.strings`. To add support 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
-```
-
 ### Key Sections:
 - **Project Overview**: Explains the project and its architecture.
 - **Features**: Describes what the app can do.
