@@ -1,11 +1,6 @@
 # Weather-App
 iOS WeatherApp - take home iOS coding assignment
 
-Here’s a sample `README.md` file for the weather app assignment, which includes a description of the project, setup instructions, features, and technical decisions:
-
-```markdown
-# Weather App
-
 This iOS weather app fetches and displays real-time weather data using the [OpenWeatherMap API](https://openweathermap.org/api). The app is built using the **MVVM-C** architecture, with a combination of **UIKit** and **SwiftUI**. The application supports location-based weather fetching, user-specified city searches, image caching for weather icons, and localization for multiple languages.
 
 ## Features
