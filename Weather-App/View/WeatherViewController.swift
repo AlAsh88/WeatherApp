@@ -131,7 +131,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
                 guard let weather = weather else { return }
                 let tempCelsius = weather.main.temp
                 let tempFahrenheit = (tempCelsius * 9/5) + 32
-//                temperatureLabel.text = NSLocalizedString("Temperature", comment: "Label for temperature")
+
                 self?.temperatureLabel.text = NSLocalizedString("Temperature: ", comment: "Label for temperature") + String(format: "%.1f °F", tempFahrenheit)
                 self?.descriptionLabel.text = "Description: \(weather.weather.first?.description ?? "")"
 
